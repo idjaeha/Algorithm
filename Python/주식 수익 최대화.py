@@ -3,15 +3,14 @@ def maximizeProfit(nums):
     result = 0
     min_idx = 0
     max_idx = 0
-    #¿Ã¶ó°¡´Â ±¸°£¿¡¼­ÀÇ ÃÖ´ë Â÷ÀÌ¸¦ ±¸ÇÑ´Ù
+    #ì˜¬ë¼ê°€ëŠ” êµ¬ê°„ì—ì„œì˜ ìµœëŒ€ ì°¨ì´ë¥¼ êµ¬í•œë‹¤
     for i in range(1,len(nums)):
-        #ÀÛ¾ÆÁú¶§ min_idx°¡ ¹Ù²ï´Ù.
-        if nums[max_idx] > nums[i]:
+        #ì‘ì•„ì§ˆë•Œ min_idxê°€ ë°”ë€ë‹¤.
+        if nums[min_idx] > nums[i]:
             min_idx = i
-        max_idx = i
-        #result°ªº¸´Ù max_idx - min_idxÀÇ °ªÀÌ Ä¿Áö¸é º¯°æÇÑ´Ù
-        if result < nums[max_idx] - nums[min_idx]:
-            result = nums[max_idx] - nums[min_idx]
+        #resultê°’ë³´ë‹¤ max_idx - min_idxì˜ ê°’ì´ ì»¤ì§€ë©´ ë³€ê²½í•œë‹¤
+        if result < nums[i] - nums[min_idx]:
+            result = nums[i] - nums[min_idx]
     return result
 
 def main():
