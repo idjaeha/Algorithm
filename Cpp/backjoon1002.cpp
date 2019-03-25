@@ -36,11 +36,11 @@ public:
 		}
 		
 		// 원의 중심이 내부에 있을 때
-		if (dist <= r1 || dist <= r2) {
-			if (abs(r1 - r2) == dist) {
+		else if (dist <= r1 || dist <= r2) {
+			if (square(r1 - r2) == dist) {
 				return 1;
 			}
-			else if (abs(r1 - r2) > dist){
+			else if (square(r1 - r2) > dist){
 				return 0;
 			}
 			else {
@@ -49,7 +49,7 @@ public:
 		}
 
 		// 원의 중심이 외부에 있을 때 
-		if (dist < r1r2) {
+		else if (dist < r1r2) {
 			return 2;
 		}
 		else if (dist == r1r2) {
