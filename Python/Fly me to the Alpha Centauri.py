@@ -25,5 +25,5 @@ for _ in range(count):
             else:
                 answer += (add_pos - 1)
             break
-        
+
     print(answer)

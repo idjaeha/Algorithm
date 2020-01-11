@@ -17,8 +17,8 @@ def isStackSequence(nums):
     return True
 
 def main():
-    print(isStackSequence([2, 1, 4, 3])) # True°¡ ¸®ÅÏµÇ¾î¾ß ÇÕ´Ï´Ù
-    print(isStackSequence([3, 1, 2, 4])) # False°¡ ¸®ÅÏµÇ¾î¾ß ÇÕ´Ï´Ù
+    print(isStackSequence([2, 1, 4, 3])) # Trueï¿½ï¿½ ï¿½ï¿½ï¿½ÏµÇ¾ï¿½ï¿½ ï¿½Õ´Ï´ï¿½
+    print(isStackSequence([3, 1, 2, 4])) # Falseï¿½ï¿½ ï¿½ï¿½ï¿½ÏµÇ¾ï¿½ï¿½ ï¿½Õ´Ï´ï¿½
 
     
 if __name__ == "__main__":

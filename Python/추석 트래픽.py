@@ -7,12 +7,12 @@ def solution(lines):
     # 이것을 저장하기 위해 hash를 사용한다.
     # 이유는 단순히 배열을 사용하기에는 너무 많은 공간이 사용되기 때문이다.
     # 더할때마다 최대값을 구하여 마지막에 반환한다.
-    
+
     # 계산할 수 있도록 값을 변경한다.
     data_times = list(map(convertTime, lines))
-    convertSecond = lambda x : int(float(x.split()[2][:-1]) * 1000)
+    def convertSecond(x): return int(float(x.split()[2][:-1]) * 1000)
     processing_times = list(map(convertSecond, lines))
-    
+
     # 아래 과정을 모든 처리에 대하여 반복한다.
     # data_time 과 processing_time의 차를 이용하여 start_time과 finish_time을 int 형태로 구한다.
     # 그리고 그 차이만큼 반복하여 해쉬 값에 저장한다.
@@ -23,20 +23,21 @@ def solution(lines):
     for idx in range(len(data_times)):
         start_time = data_times[idx] - processing_times[idx] + 1
         finish_time = data_times[idx]
-        
+
         for time in range(start_time, finish_time + 1000):
             if time < 0:
                 continue
-            
+
             try:
                 result[time] += 1
             except:
                 result[time] = 1
-            
+
             answer = max(answer, result[time])
     return answer
 
+
 def convertTime(line):
     time = line.split()[1].split(':')
-    
-    return int((float(time[0]) * 60 * 60 + float(time[1]) * 60 + float(time[2])) * 1000 )
+
+    return int((float(time[0]) * 60 * 60 + float(time[1]) * 60 + float(time[2])) * 1000)

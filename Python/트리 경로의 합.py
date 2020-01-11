@@ -34,7 +34,6 @@ def printTree(node):
 #=================================================================================
 def path_sum(node, targetSum):
     def dfsHelper(node, curSum):
-        # 여기에 깊이 우선 탐색을 구현 해 봅시다.
         if node is None:
             if curSum == targetSum:
                 return True

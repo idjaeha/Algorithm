@@ -9,7 +9,8 @@ for k in range(14):
         if n == 0:
             result[(k + 1) * 14 + n] = 1
             continue
-        result[(k + 1) * 14 + n] = result[(k + 1) * 14 + n - 1] + result[k * 14 + n]
+        result[(k + 1) * 14 + n] = result[(k + 1)
+                                          * 14 + n - 1] + result[k * 14 + n]
 
 count = int(input())
 for _ in range(count):

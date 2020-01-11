@@ -19,7 +19,7 @@ def josephus(num, target):
     return result
 
 def main():
-    print(josephus(7, 3)) #[3, 6, 2, 7, 5, 1, 4]ÀÌ ¹ÝÈ¯µÇ¾î¾ß ÇÕ´Ï´Ù
+    print(josephus(7, 3)) #[3, 6, 2, 7, 5, 1, 4]ï¿½ï¿½ ï¿½ï¿½È¯ï¿½Ç¾ï¿½ï¿½ ï¿½Õ´Ï´ï¿½
 
 if __name__ == "__main__":
     main()
