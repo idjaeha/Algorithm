@@ -1,5 +1,5 @@
 class Tree:
-    def __init__(self, root, node):
+    def __init__(self, root):
         self.tree = {}
         self.root = root
 
@@ -21,7 +21,7 @@ class Tree:
             node = stack.pop()
             if node not in visit:
                 visit.append(node)
-                sub_tree = self.tree[node]
+                sub_tree = self.tree[node] if node in self.tree else []
                 if sub_tree:
                     sub_tree.sort(reverse=True)
                     stack.extend(sub_tree)
@@ -44,7 +44,7 @@ class Tree:
             del queue[0]
             if node not in visit:
                 visit.append(node)
-                sub_tree = self.tree[node]
+                sub_tree = self.tree[node] if node in self.tree else []
                 if sub_tree:
                     sub_tree.sort()
                     queue.extend(sub_tree)
@@ -59,7 +59,7 @@ class Tree:
 
 
 node, link, root = list(map(int, input().split()))
-my_tree = Tree(root, node)
+my_tree = Tree(root)
 for _ in range(link):
     my_tree.make_node(*list(map(int, input().split())))
 
