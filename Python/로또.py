@@ -15,7 +15,17 @@
 각 테스트 케이스 사이에는 빈 줄을 하나 출력한다.
 """
 
-print(5 + 1)
+
+def solution():
+    pass
+
+
+def main():
+    solution()
+
+
+if __name__ == "__main__":
+    main()
 
 
 """
