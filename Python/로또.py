@@ -14,10 +14,38 @@
 각 테스트 케이스마다 수를 고르는 모든 방법을 출력한다. 이때, 사전 순으로 출력한다.
 각 테스트 케이스 사이에는 빈 줄을 하나 출력한다.
 """
+MAX_NUM = 6
 
 
 def solution():
-    pass
+    while True:
+        tmp = list(map(int, input().split()))
+        num = tmp[0]
+        nums_list = tmp[1:]
+        if num == 0:
+            break
+        results = makeAllResult(num, nums_list)
+        for result in results:
+            for num in result:
+                print(num, end=" ")
+            print()
+        print()
+
+
+def makeAllResult(num, nums_list):
+    result = []
+    pick(result, nums_list, [])
+    return result
+
+
+def pick(result, num_list, picked_list):
+    if len(picked_list) == MAX_NUM:
+        result.append(picked_list[:])
+        return
+    for idx, num in enumerate(num_list):
+        picked_list.append(num)
+        pick(result, num_list[idx + 1:], picked_list)
+        picked_list.pop()
 
 
 def main():
@@ -26,7 +54,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
 """
 예제 입력 : 
@@ -49,26 +76,31 @@ if __name__ == "__main__":
 1 2 3 5 8 34
 1 2 3 5 13 21
 1 2 3 5 13 34
+
 1 2 3 5 21 34
 1 2 3 8 13 21
 1 2 3 8 13 34
 1 2 3 8 21 34
 1 2 3 13 21 34
+
 1 2 5 8 13 21
 1 2 5 8 13 34
 1 2 5 8 21 34
 1 2 5 13 21 34
 1 2 8 13 21 34
+
 1 3 5 8 13 21
 1 3 5 8 13 34
 1 3 5 8 21 34
 1 3 5 13 21 34
 1 3 8 13 21 34
+
 1 5 8 13 21 34
 2 3 5 8 13 21
 2 3 5 8 13 34
 2 3 5 8 21 34
 2 3 5 13 21 34
+
 2 3 8 13 21 34
 2 5 8 13 21 34
 3 5 8 13 21 34
