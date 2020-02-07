@@ -6,6 +6,9 @@ star_list = ['*' for _ in range(num * num)]
 
 
 def paint_star(star_list, num, size, start_idx):
+    # num : 처음에 받은 숫자, 전체 크기
+    # size : 현재 진행되고 있는 부분의 크기
+    # start_idx : 현재 진행되고 있는 부분의 가장 작은 인덱스
     if size == 1:
         return
     erase_star(star_list, num, size, start_idx)

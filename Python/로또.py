@@ -48,6 +48,14 @@ def pick(result, num_list, picked_list):
         picked_list.pop()
 
 
+def pick1(result, num_list, picked_list):
+    if len(picked_list) == MAX_NUM:
+        result.append(picked_list)
+        return
+    for idx, num in enumerate(num_list):
+        pick(result, num_list[idx + 1:], picked_list + [num])
+
+
 def main():
     solution()
 
