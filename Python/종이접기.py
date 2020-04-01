@@ -19,8 +19,6 @@ def fold(start, end, mid, value_list):
     # 단위 면에서 가운데 선을 기준으로 접었을 때, 양 옆에 생기는 선을 그려주는 함수
     if start + 1 == mid or mid + 1 == end:
         return
-    # print("start, end, mid = {0}, {1}, {2}3".format(start, end, mid))
-    # print("end + mid // 2 = {0}".format((end + mid) // 2))
     value_list[(start + mid) // 2] = 0
     value_list[(end + mid) // 2] = 1
     fold(start, mid, (start+mid) // 2, value_list)

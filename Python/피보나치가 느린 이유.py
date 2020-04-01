@@ -51,7 +51,6 @@ def solution():
         num = int(input())
         fibonacci(num, cache)
         print(cache[num][1], cache[num][2])
-    print(cache)
 
 
 def main():
