@@ -39,13 +39,14 @@ N	stages	                    result
 4번 스테이지 실패율 : 1/2
 5번 스테이지 실패율 : 0/1
 각 스테이지의 번호를 실패율의 내림차순으로 정렬하면 다음과 같다.
-[3,4,2,1,5]
+[3, 4, 2, 1, 5]
 
 
 입출력 예 #2
 모든 사용자가 마지막 스테이지에 있으므로 4번 스테이지의 실패율은 1이며 나머지 스테이지의 실패율은 0이다.
-[4,1,2,3]
+[4, 1, 2, 3]
 """
+import collections
 
 
 def solution(N, stages):
@@ -54,40 +55,17 @@ def solution(N, stages):
     # 1. 각각 실패율을 구한다.
     # 2. 앞에서부터 차례대로 뽑아서 제일 낮은 값을 뽑아 결과 값에 넣는다.
     # 3. 결과값을 반환한다.
-    """
-    1. 실패율 구하는 방법
-    스테이지에 도달한 플레이어의 수                 => n번째 스테이지보다 크거나 같은 경우
-    도달하였으나 아직 클리어하지 못한 플레이어의 수  => n번째 스테이지보다 작거나 같은 경우
-    """
+    count_stages = collections.Counter(stages)
+    cur_clear = len(stages)
     for cur_stage in range(1, N+1):
-        reach_list = list(filter(lambda x: x >= cur_stage, stages))
-        if len(reach_list) == 0:
-            fail_list.append([cur_stage, 0])
+        if cur_stage in count_stages:
+            fail_list.append([cur_stage, count_stages[cur_stage] / cur_clear])
+            cur_clear -= count_stages[cur_stage]
         else:
-            not_clear_list = list(filter(lambda x: x <= cur_stage, reach_list))
-            fail_list.append(
-                [cur_stage, len(not_clear_list) / len(reach_list)])
-    fail_list = sorted(fail_list, key=lambda x: x[1], reverse=True)
+            fail_list.append([cur_stage, 0])
+    fail_list = sorted(fail_list, key=lambda x: (-x[1], x[0]))
     for num in fail_list:
         answer.append(num[0])
-    """
-    2. 앞에서부터 차례대로 뽑아서 제일 낮은 값을 뽑아 결과 값에 넣는다.
-    - 가장 작은 값과 인덱스를 저장한다.
-    - 그 값보다 작은 경우에만 변경한다.
-    """
-    # size = len(fail_dict)
-    # for _ in range(size):
-    #     max_percent = -INF
-    #     max_value = 0
-    #     for cur_stage in fail_dict:
-    #         if max_percent < fail_dict[cur_stage]:
-    #             max_percent = fail_dict[cur_stage]
-    #             max_value = cur_stage
-    #     answer.append(max_value)
-    #     fail_dict.pop(max_value)
-    """
-    3. 결과 값을 반환한다.
-    """
 
     return answer
 
