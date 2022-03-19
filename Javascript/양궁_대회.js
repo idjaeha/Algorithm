@@ -43,14 +43,23 @@ const getScores = (n, info, answerInfo, lionScores, apeachScores) => {
     }, 0);
 
     // 라이온이 이긴 경우 (gap === 0은 비긴 경우를 의미함. 따라서 카운트하지 않음)
-    if (gap >= answerInfo.maxGap && gap > 0) {
-      answerInfo.maxGap = gap;
+    if (gap > 0 && gap >= answerInfo.maxGap) {
       const translatedScore = lionScores.reduce(
-        (prev, cur, idx) => prev + cur * 2 ** idx,
+        (prev, cur, idx) => prev + cur * 10 ** idx,
         0
       );
-      if (translatedScore > answerInfo.translatedScore)
+      // 갭이 더 큰 경우에는 무조건 해당 값을 사용한다.
+      if (gap > answerInfo.maxGap) {
+        answerInfo.maxGap = gap;
+        answerInfo.translatedScore = translatedScore;
         answerInfo.answer = lionScores;
+        return;
+      }
+      // 갭이 같은 경우에는 환산값을 비교하여 진행한다.
+      if (translatedScore > answerInfo.translatedScore) {
+        answerInfo.translatedScore = translatedScore;
+        answerInfo.answer = lionScores;
+      }
     }
     return;
   }
@@ -97,9 +106,9 @@ function solution(n, info) {
 }
 
 // 예제 코드
-console.log(solution(5, [2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0]));
-console.log(solution(1, [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
-console.log(solution(9, [0, 0, 1, 2, 0, 1, 1, 1, 1, 1, 1]));
-console.log(solution(10, [0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 3]));
-console.log(solution(10, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
-console.log(solution(2, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]));
+// console.log(solution(5, [2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0]));
+// console.log(solution(1, [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
+// console.log(solution(9, [0, 0, 1, 2, 0, 1, 1, 1, 1, 1, 1]));
+// console.log(solution(10, [0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 3]));
+// console.log(solution(10, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
+// console.log(solution(2, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]));
