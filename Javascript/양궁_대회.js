@@ -1,7 +1,7 @@
 /*
 https://programmers.co.kr/learn/courses/30/lessons/92342?language=javascript
 2022 KAKAO BLIND RECRUITMENT
-양궁대회
+양궁 대회
 
 최악의 경우에도 경우의 수가 적고, 제한시간 또한 10초로 넉넉하게 주었기 때문에 완전탐색을 진행해보자.
 
@@ -29,6 +29,7 @@ https://programmers.co.kr/learn/courses/30/lessons/92342?language=javascript
 const getScores = (n, info, answers, lionScores, maxGap, apeachScores) => {
   // 탈출 조건
   if (n === 0 || info.length === 0) {
+    for (let _ = lionScores.length; _ < 11; _++) lionScores.push(0);
     if (info.length === 0) {
       lionScores[lionScores.length - 1] += n;
     }
@@ -40,10 +41,11 @@ const getScores = (n, info, answers, lionScores, maxGap, apeachScores) => {
       // 둘다 0개라서 점수를 못 얻는 경우
       else return prev;
     }, 0);
-    if (gap >= maxGap[0]) {
+    if (gap >= maxGap[0] && gap !== 0) {
       if (gap !== maxGap[0]) answers.length = 0;
       maxGap[0] = gap;
-      answers.push(lionScores);
+      if (answers.includes(lionScores.join("")) === false)
+        answers.push(lionScores.join(""));
     }
     return;
   }
@@ -56,7 +58,7 @@ const getScores = (n, info, answers, lionScores, maxGap, apeachScores) => {
         n - (elem + 1),
         [...info.slice(idx + 1)],
         answers,
-        [...lionScores.slice(0, idx), elem + 1, ...lionScores.slice(idx + 1)],
+        [...lionScores, elem + 1],
         maxGap,
         apeachScores
       );
@@ -67,7 +69,7 @@ const getScores = (n, info, answers, lionScores, maxGap, apeachScores) => {
         n - 1,
         [...info.slice(idx + 1)],
         answers,
-        [...lionScores.slice(0, idx), 1, ...lionScores.slice(idx + 1)],
+        [...lionScores, 1],
         maxGap,
         apeachScores
       );
@@ -77,7 +79,7 @@ const getScores = (n, info, answers, lionScores, maxGap, apeachScores) => {
       n,
       [...info.slice(idx + 1)],
       answers,
-      [...lionScores.slice(0, idx), 0, ...lionScores.slice(idx + 1)],
+      [...lionScores, 0],
       maxGap,
       apeachScores
     );
@@ -85,11 +87,27 @@ const getScores = (n, info, answers, lionScores, maxGap, apeachScores) => {
 };
 
 function solution(n, info) {
-  let maxGap = [-1];
-  const answers = [];
+  let maxGap = [0];
+  let answers = [];
 
-  getScores(n, info, answers, new Array(11).fill(0), maxGap, info);
-  console.log(maxGap[0], answers);
+  getScores(n, info, answers, [], maxGap, info);
+  answers = answers.map((answer) => answer.split("").map((x) => +x));
+  if (answers.length === 0) return [-1];
+  else if (answers.length === 1) return answers[0];
+  else {
+    const nums = answers.map((answer) =>
+      answer.reduce((prev, cur, idx) => prev + cur * 2 ** idx, 0)
+    );
+    const max = Math.max(...nums);
+    const idx = nums.indexOf(max);
+    return answers[idx];
+  }
 }
 
-solution(5, [2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0]);
+// 예제 코드
+console.log(solution(5, [2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0]));
+console.log(solution(1, [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
+console.log(solution(9, [0, 0, 1, 2, 0, 1, 1, 1, 1, 1, 1]));
+console.log(solution(10, [0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 3]));
+console.log(solution(10, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
+console.log(solution(2, [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]));
