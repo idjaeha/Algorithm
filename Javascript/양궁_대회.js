@@ -26,7 +26,7 @@ https://programmers.co.kr/learn/courses/30/lessons/92342?language=javascript
 */
 
 // info에서 n개를 뽑아 answers에 저장하는 함수
-const getScores = (n, info, answers, lionScores, maxGap, apeachScores) => {
+const getScores = (n, info, answerInfo, lionScores, apeachScores) => {
   // 탈출 조건
   if (n === 0 || info.length === 0) {
     for (let _ = lionScores.length; _ < 11; _++) lionScores.push(0);
@@ -41,11 +41,16 @@ const getScores = (n, info, answers, lionScores, maxGap, apeachScores) => {
       // 둘다 0개라서 점수를 못 얻는 경우
       else return prev;
     }, 0);
-    if (gap >= maxGap[0] && gap !== 0) {
-      if (gap !== maxGap[0]) answers.length = 0;
-      maxGap[0] = gap;
-      if (answers.includes(lionScores.join("")) === false)
-        answers.push(lionScores.join(""));
+
+    // 라이온이 이긴 경우 (gap === 0은 비긴 경우를 의미함. 따라서 카운트하지 않음)
+    if (gap >= answerInfo.maxGap && gap > 0) {
+      answerInfo.maxGap = gap;
+      const translatedScore = lionScores.reduce(
+        (prev, cur, idx) => prev + cur * 2 ** idx,
+        0
+      );
+      if (translatedScore > answerInfo.translatedScore)
+        answerInfo.answer = lionScores;
     }
     return;
   }
@@ -57,9 +62,8 @@ const getScores = (n, info, answers, lionScores, maxGap, apeachScores) => {
       getScores(
         n - (elem + 1),
         [...info.slice(idx + 1)],
-        answers,
+        answerInfo,
         [...lionScores, elem + 1],
-        maxGap,
         apeachScores
       );
     }
@@ -68,9 +72,8 @@ const getScores = (n, info, answers, lionScores, maxGap, apeachScores) => {
       getScores(
         n - 1,
         [...info.slice(idx + 1)],
-        answers,
+        answerInfo,
         [...lionScores, 1],
-        maxGap,
         apeachScores
       );
     }
@@ -78,30 +81,19 @@ const getScores = (n, info, answers, lionScores, maxGap, apeachScores) => {
     getScores(
       n,
       [...info.slice(idx + 1)],
-      answers,
+      answerInfo,
       [...lionScores, 0],
-      maxGap,
       apeachScores
     );
   });
 };
 
 function solution(n, info) {
-  let maxGap = [0];
-  let answers = [];
+  let answerInfo = { translatedScore: 0, maxGap: 0 };
 
-  getScores(n, info, answers, [], maxGap, info);
-  answers = answers.map((answer) => answer.split("").map((x) => +x));
-  if (answers.length === 0) return [-1];
-  else if (answers.length === 1) return answers[0];
-  else {
-    const nums = answers.map((answer) =>
-      answer.reduce((prev, cur, idx) => prev + cur * 2 ** idx, 0)
-    );
-    const max = Math.max(...nums);
-    const idx = nums.indexOf(max);
-    return answers[idx];
-  }
+  getScores(n, info, answerInfo, [], info);
+  if (answerInfo.answer === undefined) return [-1];
+  return answerInfo.answer;
 }
 
 // 예제 코드
