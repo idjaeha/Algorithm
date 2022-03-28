@@ -12,7 +12,6 @@ https://programmers.co.kr/learn/courses/30/lessons/92341
 6. 모든 records를 순회한 후에 배열의 개수가 홀수인 경우 23:59에 해당하는 분을 추가해줌.
 7. map을 순회하면서 시간을 금액으로 변환. (6, 7번 과정을 같이 진행해도 괜찮을듯.)
 8. 결과값을 정렬하여 반환.
-
 */
 
 const toMin = (time) => {
