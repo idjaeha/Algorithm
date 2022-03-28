@@ -15,66 +15,55 @@ edge : [[부모 노드의 번호, 자식 노드의 번호], ... , ...] (info.len
 -> dfs 혹은 bfs를 이용해서 완전 탐색. -> bfs를 한번 해볼까..? -> 잘모르겠다 일단 dfs
 -> 잘못된 경로일 경우 다시 되돌아가야하므로 백트래킹을 해야함.
 
-## 탐색 탈출 조건 (백트래킹 조건)
-1. 현재 노드가 undefined인 경우
-2. 늑대의 개수가 0보다 크고, 양의 개수 <= 늑대의 개수인 경우
+## 탐색 탈출 조건 (백트래킹 탈출 조건)
+1. 양의 개수 <= 늑대의 개수인 경우
 
-## 문제 흐름
-1. 입력을 토대로 이진트리를 생성한다.
-  1-1. info를 통해 배열을 만든다.
-  1-2. edges를 통해 left, right 값을 주입한다.
-2. dfs를 통해 모든 경로를 탐색한다.
-  2-1. 노드의 종류에 따라 양 또는 늑대의 개수를 늘려준다.
-  2-2. 탐색 탈출 조건에 해당하는지 판별한다.
-3. 반환.
-
-
-## 위에 풀이는 오답, 간과한 사실
-1. 한번 들렀던 노드여도 다시 들러볼 수 있다.
-
+## 문제 풀이
+1. 인자값을 토대로 트리를 생성한다.
+2. 방문한 곳을 순회한다.
+3. 방문한 노드의 자식 노드가 아직 방문하지 않은 곳이라면 방문한다.
+  3-1. 이때 현재 양의 개수와 방문을 마치고 나온 뒤 양의 개수를 비교하여 더 큰 값을 저장한다.
+4. 방문이 끝난다면 해당 노드를 빠져나온다. (방문 배열에서 해당 노드를 제거한다.)
 */
 
 const SHEEP = 0;
 const WOLF = 1;
 
-const LEFT = 0;
-const RIGHT = 1;
+// 방문한 곳과 현재 위치를 줬을 때, 방문한 곳을 토대로 탐색할 수 있는 모든 경로를 탐색하는 함수
+const getMaxSheep = (sheep, wolf, tree, visit, curIdx) => {
+  if (tree[curIdx].type === SHEEP) sheep++;
+  else wolf++;
+
+  if (wolf >= sheep) return 0; // 0을 리턴하면 최대 값을 비교하기 때문에 의미 없는 값이 됨.
+
+  let maxSheep = sheep;
+  visit.forEach((parentIdx) => {
+    tree[parentIdx].children.forEach((childIdx) => {
+      if (visit.includes(childIdx) === false) {
+        visit.push(childIdx);
+        maxSheep = Math.max(
+          maxSheep,
+          getMaxSheep(sheep, wolf, tree, visit, childIdx)
+        );
+        visit.pop();
+      }
+    });
+  });
+
+  return maxSheep;
+};
 
 const createNode = (type) => ({
   type,
   children: [],
 });
 
-const max = (a, b) => {
-  if (a[SHEEP] > b[SHEEP]) return a;
-  else if (a[SHEEP] < b[SHEEP]) return b;
-  else if (a[WOLF] > b[WOLF]) return b;
-  else return a;
-};
-
-// 양의 최대 개수를 구해주는 함수
-const getMaxCount = (tree, curNode, count) => {
-  if (curNode === undefined) return [...count];
-  else if (count[WOLF] !== 0 && count[WOLF] >= count[SHEEP]) return [0, 0];
-
-  count[curNode.type]++;
-  console.log(count);
-  count = max(
-    count,
-    getMaxCount(tree, tree[curNode.children[LEFT]], [...count])
-  );
-  return max(
-    count,
-    getMaxCount(tree, tree[curNode.children[RIGHT]], [...count])
-  );
-};
-
-function wrongSolution(info, edges) {
+function solution(info, edges) {
   const tree = info.map((type) => createNode(type));
   edges.forEach(([x, y]) => {
     tree[x].children.push(y);
   });
-  return getMaxCount(tree, tree[0], [0, 0])[SHEEP];
+  return getMaxSheep(0, 0, tree, [0], 0);
 }
 
 console.log(
