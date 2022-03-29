@@ -35,11 +35,11 @@ const EMPTY = "0";
 const WALL = "1";
 const MAX_NUM = 1000 * 1000;
 
-const getMin = (map, X, Y, canBreak, row, col, value) => {
+const getMin = (map, X, Y, canBreak, row, col, init) => {
   const queue = [];
   const dx = [1, -1, 0, 0];
   const dy = [0, 0, 1, -1];
-  map[Y][X] = value + 1;
+  map[Y][X] = init + 1;
   let cur = { X, Y };
 
   while (cur !== undefined) {
@@ -50,12 +50,15 @@ const getMin = (map, X, Y, canBreak, row, col, value) => {
       if (map[nextY][nextX] === WALL) {
         if (canBreak === true) {
           map[nextY][nextX] = EMPTY;
-          getMin(map, nextX, nextY, false, row, col, map[Y][X]);
-          map[nextY][nextX] = WALL;
+          getMin(map, nextX, nextY, false, row, col, map[cur.Y][cur.X]);
+          //   map[nextY][nextX] = WALL;
         }
         continue;
       }
-      if (map[nextY][nextX] !== EMPTY && map[nextY][nextX] <= map[cur.Y][cur.X])
+      if (
+        map[nextY][nextX] !== EMPTY &&
+        map[nextY][nextX] <= map[cur.Y][cur.X] + 1
+      )
         continue;
       map[nextY][nextX] = map[cur.Y][cur.X] + 1;
       queue.push({ X: nextX, Y: nextY });
@@ -67,7 +70,7 @@ const getMin = (map, X, Y, canBreak, row, col, value) => {
 const solution = () => {
   const [info, ...mapString] = require("fs")
     .readFileSync("/dev/stdin")
-    // .readFileSync("./input_6x6_zero.txt")
+    // .readFileSync("./input_60x120.txt")
     .toString()
     .trim()
     .split("\n");

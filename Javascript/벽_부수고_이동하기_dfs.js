@@ -36,7 +36,6 @@ const WALL = "1";
 const MAX_NUM = 1000 * 1000;
 
 const getMin = (map, X, Y, value, row, col, canBreak) => {
-  count.count++;
   let min = MAX_NUM;
   if (X >= col || Y >= row || X < 0 || Y < 0) return MAX_NUM; // 입력값의 최대를 반환하여 결과에 영향을 주지 않음.
   if (value >= row * col) return MAX_NUM;
@@ -52,7 +51,7 @@ const getMin = (map, X, Y, value, row, col, canBreak) => {
   } else {
     if (
       map[Y][X] !== EMPTY && // 들렀던 곳
-      map[Y][X] <= value
+      map[Y][X] <= value + 1
     )
       return MAX_NUM;
   }
@@ -73,8 +72,8 @@ const getMin = (map, X, Y, value, row, col, canBreak) => {
 
 const solution = () => {
   const [info, ...mapString] = require("fs")
-    // .readFileSync("/dev/stdin")
-    .readFileSync("./input.txt")
+    .readFileSync("/dev/stdin")
+    // .readFileSync("./input_6x4.txt")
     .toString()
     .trim()
     .split("\n");
