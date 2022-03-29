@@ -39,13 +39,10 @@ const getMin = (map, X, Y, canBreak, row, col, value) => {
   const queue = [];
   const dx = [1, -1, 0, 0];
   const dy = [0, 0, 1, -1];
-  queue.push({ X, Y });
   map[Y][X] = value + 1;
-  let queueIdx = 0;
-  let cur = queue[queueIdx];
+  let cur = { X, Y };
 
-  while (queue.length !== queueIdx) {
-    console.log(map);
+  while (cur !== undefined) {
     for (let i = 0; i < 4; i++) {
       const nextX = cur.X + dx[i];
       const nextY = cur.Y + dy[i];
@@ -63,15 +60,14 @@ const getMin = (map, X, Y, canBreak, row, col, value) => {
       map[nextY][nextX] = map[cur.Y][cur.X] + 1;
       queue.push({ X: nextX, Y: nextY });
     }
-    queueIdx++;
-    cur = queue[queueIdx];
+    cur = queue.shift(0);
   }
 };
 
 const solution = () => {
   const [info, ...mapString] = require("fs")
-    // .readFileSync("/dev/stdin")
-    .readFileSync("./input_6x6_zero.txt")
+    .readFileSync("/dev/stdin")
+    // .readFileSync("./input_6x6_zero.txt")
     .toString()
     .trim()
     .split("\n");
