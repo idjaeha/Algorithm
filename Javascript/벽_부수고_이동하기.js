@@ -35,17 +35,19 @@ const EMPTY = "0";
 const WALL = "1";
 const MAX_NUM = 1000 * 1000;
 
-const copy = (array2d) => array2d.map((line) => line.map((x) => x));
-
 const getMin = (map, X, Y, value, row, col, canBreak) => {
   let min = MAX_NUM;
   if (X >= col || Y >= row || X < 0 || Y < 0) return MAX_NUM; // 입력값의 최대를 반환하여 결과에 영향을 주지 않음.
   if (value >= row * col) return MAX_NUM;
   if (map[Y][X] === WALL) {
     if (canBreak === true) {
-      const temp = copy(map);
-      temp[Y][X] = EMPTY;
-      return Math.min(min, getMin(temp, X, Y, value, row, col, false));
+      map[Y][X] = EMPTY;
+      const result = Math.min(
+        MAX_NUM,
+        getMin(map, X, Y, value, row, col, false)
+      );
+      map[Y][X] = WALL;
+      return result;
     } else {
       return MAX_NUM;
     }
@@ -59,22 +61,24 @@ const getMin = (map, X, Y, value, row, col, canBreak) => {
 
   value++;
   map[Y][X] = value;
+  //   console.log(X, Y, canBreak);
+  //   console.log(map);
   if (X === col - 1 && Y === row - 1) {
     return value;
   }
 
-  min = Math.min(min, getMin(copy(map), X + 1, Y, value, row, col, canBreak));
-  min = Math.min(min, getMin(copy(map), X - 1, Y, value, row, col, canBreak));
-  min = Math.min(min, getMin(copy(map), X, Y + 1, value, row, col, canBreak));
-  min = Math.min(min, getMin(copy(map), X, Y - 1, value, row, col, canBreak));
+  min = Math.min(min, getMin(map, X + 1, Y, value, row, col, canBreak));
+  min = Math.min(min, getMin(map, X - 1, Y, value, row, col, canBreak));
+  min = Math.min(min, getMin(map, X, Y + 1, value, row, col, canBreak));
+  min = Math.min(min, getMin(map, X, Y - 1, value, row, col, canBreak));
 
   return Math.min(MAX_NUM, min);
 };
 
 const solution = () => {
   const [info, ...mapString] = require("fs")
-    // .readFileSync("/dev/stdin")
-    .readFileSync("./input.txt")
+    .readFileSync("/dev/stdin")
+    // .readFileSync("./input.txt")
     .toString()
     .trim()
     .split("\n");
