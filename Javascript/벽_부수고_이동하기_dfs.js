@@ -10,7 +10,6 @@ https://www.acmicpc.net/problem/2206
 맵에 해당 지점까지 가는데에 소모한 비용을 저장해두고 그 값보다 작다면 이동한다.
 
 ## 탈출 조건
-- 비용이 최대값을 벗어났다면 탈출
 - 벗어났다면 탈출
 - 목표 지점에 도착했다면 탈출
 - 벽이라면
@@ -72,8 +71,8 @@ const getMin = (map, X, Y, value, row, col, canBreak) => {
 
 const solution = () => {
   const [info, ...mapString] = require("fs")
-    .readFileSync("/dev/stdin")
-    // .readFileSync("./input_6x4.txt")
+    // .readFileSync("/dev/stdin")
+    .readFileSync("./input_10x5.txt")
     .toString()
     .trim()
     .split("\n");
