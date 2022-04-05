@@ -20,45 +20,45 @@
 	- visit이 1이라면 도달할 수 있는 경로라고 간주하고 1을 반환한다.
 */
 
-const dx = [1, -1, 0, 0];
-const dy = [0, 0, 1, -1];
-const result = { count: 0, path: [{ x: 0, y: 0 }] };
+const dx = [0, 0, 1, -1];
+const dy = [1, -1, 0, 0];
+let map;
+let visit;
+let row;
+let col;
 
-const move = (map, visit, row, col, x, y) => {
-  if (visit[y][x] === 1 || (x === col - 1 && y === row - 1)) {
-    result.count += 1;
-    result.path.forEach(({ x, y }) => {
-      visit[y][x] += 1;
-    });
-    return;
+const move = (x, y) => {
+  if (x === 0 && y === 0) {
+    return 1;
   }
-
+  if (visit[y][x] != -1) {
+    return visit[y][x];
+  }
+  visit[y][x] = 0;
   for (let idx = 0; idx < 4; idx++) {
     const [nextX, nextY] = [x + dx[idx], y + dy[idx]];
     if (0 <= nextX && nextX < col && 0 <= nextY && nextY < row) {
-      if (map[y][x] > map[nextY][nextX]) {
-        result.path.push({ x: nextX, y: nextY });
-        move(map, visit, row, col, nextX, nextY);
-        result.path.pop();
+      if (map[y][x] < map[nextY][nextX]) {
+        visit[y][x] += move(nextX, nextY);
       }
     }
   }
+  return visit[y][x];
 };
 
 const solution = () => {
   const [info, ...mapString] = require("fs")
-    // .readFileSync("/dev/stdin")
-    .readFileSync("./test.txt")
+    .readFileSync("/dev/stdin")
+    // .readFileSync("./test.txt")
     .toString()
     .trim()
     .split("\n");
-  const [row, col] = info.split(" ").map((x) => Number.parseInt(x, 10));
-  const map = mapString.map((line) =>
+  [row, col] = info.split(" ").map((x) => Number.parseInt(x, 10));
+  map = mapString.map((line) =>
     line.split(" ").map((x) => Number.parseInt(x, 10))
   );
-  const visit = map.map((line) => line.map((_) => 0));
-  move(map, visit, row, col, 0, 0);
-  console.log(result.count);
+  visit = map.map((line) => line.map((_) => -1));
+  console.log(move(col - 1, row - 1));
 };
 
 solution();
