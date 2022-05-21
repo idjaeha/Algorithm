@@ -1,9 +1,8 @@
 /*
 
-1. 연속된 길이의 합이 길면 mid = start + 1
-2. 연속된 길이의 합이 짧으면 mid = end
-3. mid = (start + end) / 2
-4. 
+	1. 연속된 길이의 합이 길면 mid = start + 1
+	2. 연속된 길이의 합이 짧으면 mid = end
+	3. mid = (start + end) / 2
 
 */
 
